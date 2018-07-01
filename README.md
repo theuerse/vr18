@@ -14,6 +14,15 @@
 
 
 ## TODO:
-Exploration: Welcher Input/Output wird gegeben/verlangt?   (owner: Julian - Done)
-
-Grobe Planung der Komponenten (Erweiterung des TODO) (owner: Julian)
+| Task | Owner | State
+|--|:--:|:--:|
+|~~Exploration: Welcher Input/Output wird gegeben/verlangt?~~| @MrMudskip | Done
+|~~Grobe Planung der Komponenten (Erweiterung des TODO)~~ | @MrMudskip | Done
+|GUI Design & Implementation |@MrMudskip| Started
+|A self-designed shot-boundary detection |?| TODO
+|Similarity measures for comparisons |?| TODO
+|Descriptor: Colour Histogram |?| TODO
+|Descriptor: Keypoint-Detection |?| TODO
+|Descriptor: Edge Histogram |?| TODO
+|Agglomerative Clustering|?| TODO
+|Small CNN (downloadable)|?| TODO
