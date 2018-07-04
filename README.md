@@ -12,6 +12,8 @@
 
 **Source:** http://demo2.itec.aau.at/vbs/aau
 
+## Note by MrMudskip:
+Please make sure to implement each descriptor (and other features) as its own class, since the methods from the buttons are very likely to change during UI development. Buttons should only call methods from the other classes and not have too mucb functionality themselves.
 
 ## TODO:
 | Task | Owner | State
