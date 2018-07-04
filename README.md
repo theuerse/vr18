@@ -27,6 +27,8 @@
 |Agglomerative Clustering|?| TODO
 |Small CNN (downloadable)|?| TODO
 
+## Milestones
+Sa 07.04.2018 base system feature complete (whole cycle)
 
 ## IMG
 ![Design01](https://github.com/theuerse/vr18/blob/1ec8988db8852e3b227385d951201ffa09c0abf4/img/VR_proj_Design_01.png "Design01")
