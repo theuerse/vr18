@@ -1,5 +1,5 @@
 # vr18
-**Input**: Text queries like *“Find shots of destroyed buildings”* or *“Find shots of people shopping”*
+**Input**: Text queries like *â€œFind shots of destroyed buildingsâ€* or *â€œFind shots of people shoppingâ€*
 
 **Output**: HTTP GET request with parameters:
 * Group number (we are group "2")
@@ -19,7 +19,7 @@
 |~~Exploration: Welcher Input/Output wird gegeben/verlangt?~~| @MrMudskip | Done
 |~~Grobe Planung der Komponenten (Erweiterung des TODO)~~ | @MrMudskip | Done
 |GUI Design & Implementation |@MrMudskip| Started
-|A self-designed shot-boundary detection |?| TODO
+|A self-designed shot-boundary detection | theuerse | Started
 |Similarity measures for comparisons |?| TODO
 |Descriptor: Colour Histogram |?| TODO
 |Descriptor: Keypoint-Detection |?| TODO
