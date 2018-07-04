@@ -13,22 +13,4 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_searchButton_clicked()
-{
 
-}
-
-void MainWindow::on_colorHistButton_clicked()
-{
-
-}
-
-void MainWindow::on_edgeHistButton_clicked()
-{
-
-}
-
-void MainWindow::on_keypointsButton_clicked()
-{
-
-}

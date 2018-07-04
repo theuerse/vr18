@@ -15,15 +15,6 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-private slots:
-    void on_searchButton_clicked();
-
-    void on_colorHistButton_clicked();
-
-    void on_edgeHistButton_clicked();
-
-    void on_keypointsButton_clicked();
-
 private:
     Ui::MainWindow *ui;
 };
