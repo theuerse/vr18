@@ -21,9 +21,9 @@
 |GUI Design & Implementation |@MrMudskip| Started
 |A self-designed shot-boundary detection | theuerse | Started
 |Similarity measures for comparisons |?| TODO
-|Descriptor: Colour Histogram |?| TODO
+|Descriptor: Colour Histogram | babel | Started
 |Descriptor: Keypoint-Detection |?| TODO
-|Descriptor: Edge Histogram |?| TODO
+|Descriptor: Edge Histogram | babel | Started
 |Agglomerative Clustering|?| TODO
 |Small CNN (downloadable)|?| TODO
 
