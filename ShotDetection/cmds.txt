@@ -1,0 +1,5 @@
+# ffmpeg -i 35749.mp4 -vf select='gt(scene\,0.4)' -vsync vfr 35749_%d.png
+
+cmake .
+make
+./ShotDetect
