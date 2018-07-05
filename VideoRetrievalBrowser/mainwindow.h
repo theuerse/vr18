@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QGridLayout>
+#include <QColorDialog>
 
 namespace Ui {
 class MainWindow;
@@ -22,10 +23,24 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QGridLayout *gridLayout;
+    QColorDialog *colorPicker;
+
     int gridLayoutCounter_row;
     int gridLayoutCounter_col;
-    int gridLayoutMaxRows;
     int gridLayoutMaxCols;
+
+    /**
+     * @brief Puts an image it on the gridview to be displayed and manages gridLayout's index overflows
+     * @param img
+     * @todo override QWidget::resizeEvent() to get correct gridLayoutMaxCols after resize.
+     */
+    void displayImage(QPixmap img);
+
+    /**
+     * @brief Deletes all images that are currently displayed on the gridLayout
+     * @note Does nothing if there are no images in gridLayout
+     */
+    void deleteDisplayedImages();
 
 };
 
