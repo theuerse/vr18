@@ -21,13 +21,13 @@ Please make sure to implement each descriptor (and other features) as its own cl
 |~~Exploration: Welcher Input/Output wird gegeben/verlangt?~~| @MrMudskip | Done
 |~~Grobe Planung der Komponenten (Erweiterung des TODO)~~ | @MrMudskip | Done
 |GUI Design & Implementation |@MrMudskip| Started
-|A self-designed shot-boundary detection | theuerse | Started
+|A self-designed shot-boundary detection | theuerse | Very basic version done
 |Similarity measures for comparisons |?| TODO
 |Descriptor: Colour Histogram | babel | Started
 |Descriptor: Keypoint-Detection |?| TODO
 |Descriptor: Edge Histogram | babel | Started
 |Agglomerative Clustering|?| TODO
-|Small CNN (downloadable)|?| TODO
+|Small CNN (downloadable)| theuerse | Started
 
 ## Milestones
 Sa 07.04.2018 base system feature complete (whole cycle)
