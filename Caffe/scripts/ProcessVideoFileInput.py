@@ -35,15 +35,18 @@ def classifyImage(filepath):
 
     # getting concept
     output = check_output([CONCEPT_DETECTOR, DEPLOY_PROTO, CAFFE_MODEL, BINARY_PROTO, SYNSET, filepath]).decode("utf-8")
-    concept = output.split("\n")[1].split('"')[1].split()[0]
+    firstLine = output.split("\n")[1]
+    concept = firstLine.split('"')[1].split()[0]
+    concept_confidence = firstLine.split()[0]
 
     # calculating dominant color
     dominantColor = getDominantColors(3,filepath)
-    print(name + ": " + str(dominantColor))
+    #print(name + ": " + str(dominantColor))
+    #print(name + ": " + concept_confidence)
 
     conn = sqlite3.connect('./vr.db')
     c = conn.cursor()
-    c.execute('insert or replace into images values (?,?,?,?,?)', [os.path.basename(filepath), concept] + dominantColor)
+    c.execute('insert or replace into images values (?,?,?,?,?,?)', [os.path.basename(filepath), concept, concept_confidence] + dominantColor)
     conn.commit()
     conn.close()
 
