@@ -1,0 +1,47 @@
+https://github.com/BVLC/caffe/wiki/Commonly-encountered-build-issues
+http://caffe.berkeleyvision.org/installation.html#compilation
+
+sudo apt-get install libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libhdf5-serial-dev protobuf-compiler
+sudo apt-get install --no-install-recommends libboost-all-dev
+sudo apt install libprotobuf-dev protobuf-compiler
+sudo apt-get install libatlas-base-dev
+sudo apt install libsnappy-dev
+
+sudo apt-get install libgflags-dev
+sudo apt-get install libgoogle-glog-dev
+sudo apt-get install libleveldb-dev
+sudo apt-get install liblmdb-dev
+sudo apt install python-yaml
+
+
+
+git clone https://github.com/BVLC/caffe.git
+cd caffe
+
+
+cmake .
+cp Makefile.config.example Makefile.config
+# Adjust Makefile.config (for example, if using Anaconda Python, or if cuDNN is desired)
+# ST: take inspiration in modified Makefile.config provided by me
+make all -j 4
+make test
+make runtest
+
+
+sudo make install
+sudo ldconfig
+
+
+
+
+
+http://caffe.berkeleyvision.org/gathered/examples/cpp_classification.html
+cd
+cd caffe
+python scripts/download_model_binary.py models/bvlc_reference_caffenet/
+cd data/ilsvrc12
+sh sh get_ilsvrc_aux.sh
+cd ../..
+
+
+./examples/cpp_classification/classification.bin models/bvlc_reference_caffenet/deploy.prototxt models/bvlc_reference_caffenet/bvlc_reference_caffenet.caffemodel data/ilsvrc12/imagenet_mean.binaryproto data/ilsvrc12/synset_words.txt examples/images/cat.jpg 
