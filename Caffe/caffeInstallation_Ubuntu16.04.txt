@@ -39,6 +39,8 @@ http://caffe.berkeleyvision.org/gathered/examples/cpp_classification.html
 cd
 cd caffe
 python scripts/download_model_binary.py models/bvlc_reference_caffenet/
+python scripts/download_model_binary.py models/bvlc_alexnet
+python scripts/download_model_binary.py models/bvlc_googlenet
 cd data/ilsvrc12
 sh sh get_ilsvrc_aux.sh
 cd ../..
