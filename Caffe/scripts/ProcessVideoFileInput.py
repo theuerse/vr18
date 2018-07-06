@@ -4,6 +4,7 @@ import time
 import sqlite3
 import multiprocessing as mp
 from subprocess import check_output
+from dominantColorsKmeans import getDominantColors
 
 # shot detection
 SHOT_DIR = os.path.abspath("shots")
@@ -28,11 +29,17 @@ def detectShots(filepath):
 
 
 def classifyImage(filepath):
+    name = os.path.basename(filepath)
     start_time = time.time()
-    print("INDEX: " + os.path.basename(filepath))
+    print("INDEX: " + name)
 
+    # getting concept
     output = check_output([CONCEPT_DETECTOR, DEPLOY_PROTO, CAFFE_MODEL, BINARY_PROTO, SYNSET, filepath]).decode("utf-8")
     concept = output.split("\n")[1].split('"')[1].split()[0]
+
+    # calculating dominant color
+    dominantColor = getDominantColors(3,filepath)
+    print(name + ": " + str(dominantColor))
 
     conn = sqlite3.connect('./vr.db')
     c = conn.cursor()
@@ -40,7 +47,7 @@ def classifyImage(filepath):
     conn.commit()
     conn.close()
 
-    print("END OF INDEX: " + os.path.basename(filepath) + " " + str(time.time() - start_time) + " seconds")
+    print("END OF INDEX: " + name + " " + str(time.time() - start_time) + " seconds")
 
 
 
@@ -58,7 +65,7 @@ os.system("sh setup.sh")
 
 # shot detection
 fileList = []
-for file in os.listdir(input_dir):
+for file in sorted(os.listdir(input_dir)):
     if(file.endswith(".mp4")):
         fileList.append(os.path.join(input_dir,file))
 
@@ -69,7 +76,7 @@ results = pool.map(detectShots, fileList)
 
 # image indexing
 fileList = []
-for file in os.listdir(SHOT_DIR):
+for file in sorted(os.listdir(SHOT_DIR)):
     fileList.append(os.path.join(SHOT_DIR, file))
 results = pool.map(classifyImage, fileList)
 
