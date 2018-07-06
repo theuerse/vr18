@@ -43,7 +43,7 @@ def classifyImage(filepath):
 
     conn = sqlite3.connect('./vr.db')
     c = conn.cursor()
-    c.execute('insert or replace into images values (?,?)', [os.path.basename(filepath), concept])
+    c.execute('insert or replace into images values (?,?,?,?,?)', [os.path.basename(filepath), concept] + dominantColor)
     conn.commit()
     conn.close()
 

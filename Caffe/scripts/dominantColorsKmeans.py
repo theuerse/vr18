@@ -4,6 +4,7 @@ import numpy as np
 import scipy
 import scipy.misc
 import scipy.cluster
+import colorsys
 
 
 def calc(k, filepath):
@@ -29,11 +30,10 @@ def calc(k, filepath):
 
 
 def getDominantColors(k,filePath):
-    peak, centers = calc(k, filePath)
+    peak_rgb, centers = calc(k, filePath)
 
     # return hsv value
-    #results_hsv =[]
-    #for rgb in results_rgb:
-    #    results_hsv.append(colorsys.rgb_to_hsv(rgb[0],rgb[1],rgb[2]))
-    #return results_hsv
-    return peak
+    h, s, v = colorsys.rgb_to_hsv(peak_rgb[0] / 255., peak_rgb[1] / 255., peak_rgb[2] / 255.)
+    peak_hsv = [360 * h, 100 * s, 100 * v]
+    #print("rgb:" + str(peak_rgb) + " hsv: " +str(peak_hsv))
+    return peak_hsv
