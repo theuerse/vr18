@@ -9,3 +9,7 @@ sqlite3 vr.db "CREATE INDEX concept_index ON images(concept);"
 sqlite3 vr.db "CREATE INDEX h_index ON images(h);"
 sqlite3 vr.db "CREATE INDEX s_index ON images(s);"
 sqlite3 vr.db "CREATE INDEX v_index ON images(v);"
+
+
+sqlite3 vr.db "CREATE TABLE synset_words(concept TEXT PRIMARY KEY NOT NULL, words TEXT NOT NULL);"
+python IngestSynsetWords.py ./vr.db ./synset_words.txt
