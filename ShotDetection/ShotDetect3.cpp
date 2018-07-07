@@ -4,6 +4,9 @@
 #include <opencv2/imgproc.hpp>
 #include "opencv2/features2d.hpp"
 #include <string>
+#include "opencv2/imgproc.hpp"
+#include "opencv2/imgcodecs.hpp"
+#include "opencv2/highgui.hpp"
 
 using namespace std;
 using namespace cv;
@@ -72,13 +75,33 @@ inline vector<float> calcColorHist(Mat &img){
     return hist;
 }
 
-inline vector<float> calcHOGHist(Mat &img){
+inline Mat getHog(Mat &img){
+    Mat grad, img_grey, img_clone = img.clone();
+    int ddepth = CV_16S;
+    int ksize = 1;
+    int scale = 1;
+    int delta = 0;
 
-    Mat img_clone;
-    img.copyTo(img_clone);
+    GaussianBlur(img_clone, img_clone, Size(3, 3), 0, 0, BORDER_DEFAULT);
+
+    // Convert the image to grayscale
+    cvtColor(img_clone, img_grey, COLOR_BGR2GRAY);
+    Mat grad_x, grad_y;
+    Mat abs_grad_x, abs_grad_y;
+    Sobel(img_grey, grad_x, ddepth, 1, 0, ksize, scale, delta, BORDER_DEFAULT);
+    Sobel(img_grey, grad_y, ddepth, 0, 1, ksize, scale, delta, BORDER_DEFAULT);
+    // converting back to CV_8U
+    convertScaleAbs(grad_x, abs_grad_x);
+    convertScaleAbs(grad_y, abs_grad_y);
+    addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0, grad);
+    //imshow("bla", grad);
+    //waitKey(0);
+    /*Mat img_clone = img.clone();
     img_clone.convertTo(img_clone, CV_32F, 1/255.0);
 
-    vector<float> hist(256*2,0.0);
+    imshow('sdfs',img_clone);
+    waitKey(0);
+    vector<float> hist(256,0.0);
 
     // Calculate gradients gx, gy
     Mat gx, gy;
@@ -90,21 +113,48 @@ inline vector<float> calcHOGHist(Mat &img){
     convertScaleAbs(gx, abs_gx);
     convertScaleAbs(gy, abs_gy);
 
+
+    int channels = abs_gx.channels();
+    int nRows = abs_gx.rows;
+    int nCols = abs_gx.cols * channels;
+
+    if(abs_gx.isContinuous()) // matrix without gaps?
+        nCols *= nRows; // number of bytes (including all channels)
+
+
+    uchar x,y;
+    uchar *p = abs_gx.ptr<uchar>(0);
+    uchar *q = abs_gy.ptr<uchar>(0);
+    for(int j = 0; j < nCols; ++j){
+        x = (p[j] & 0xf0);      // four msb
+        y = (q[j] & 0xf0) >> 4; // four msb
+        hist[x|y]++;
+    }
+   */
+    /*
+    uchar x,y;
     for(int j=0;j<abs_gx.rows;j++)
     {
         for (int i=0;i<abs_gx.cols;i++)
         {
-                hist[abs_gx.at<uchar>(j,i)]++;
-                hist[256+abs_gy.at<uchar>(j,i)]++;
+                //hist[abs_gx.at<uchar>(j,i)]++;
+                //hist[256+abs_gy.at<uchar>(j,i)]++;
+            uchar x1 = abs_gx.at<uchar>(j,i);
+            x = abs_gx.at<uchar>(j,i) & 0xf0;
+            y = (abs_gy.at<uchar>(j,i) & 0xf0) >> 4;
+            hist[x|y]++;
         }
-    }
+    }*/
 
     // normalize
-    float sum = abs_gx.cols * abs_gx.rows * 2;
+    /*float sum = abs_gx.cols * abs_gx.rows;
     for(int i = 0; i < hist.size(); i++)
         hist[i] = hist[i] / sum;
 
-    return hist;
+    return hist;*/
+   // vector<float> bla;
+   // return bla;
+    return grad;
 }
 
 inline float intersection(vector<float> &h1, vector<float> &h2){
@@ -133,30 +183,39 @@ int main(int argc, char ** argv){
 
     Mat frame;
     VideoCapture cap = VideoCapture(argv[3]);
-    vector<float> lastColorHist, lastHOGHist, currentColorHist, currentHOGHist;
+    vector<float> lastColorHist, currentColorHist;
     double frameNumber = 0;
     float colorDelta, hogDelta, similarity = 0;
     float tdSum = 0;
 
+    Mat lastHog, currentHog;
+    Mat diff;
+
     cap.read(frame);
     lastColorHist = calcColorHist(frame);
-    lastHOGHist = calcHOGHist(frame);
+    lastHog = getHog(frame);
+    double currentEdgeDiff, lastEdgeDiff = 0;
+
     while(cap.read(frame)){
-        currentColorHist = calcColorHist(frame);
-        currentHOGHist = calcHOGHist(frame);
+        //currentColorHist = calcColorHist(frame);
+        currentHog = getHog(frame);
 
-        similarity = intersection(lastColorHist, currentColorHist);
-        colorDelta = 1 - similarity;
+        //similarity = intersection(lastColorHist, currentColorHist);
+        //colorDelta = 1 - similarity;
 
-        similarity = intersection(lastHOGHist, currentHOGHist);
-        hogDelta = 1 - similarity;
+        //similarity = intersection(lastHog, currentHog);
 
-        if(colorDelta > td || hogDelta > td){
+        absdiff(lastHog, currentHog, diff);
+        currentEdgeDiff = cv::sum(diff).val[0];
+
+        hogDelta = abs(lastEdgeDiff - currentEdgeDiff)/lastEdgeDiff;
+
+        /*if(colorDelta > td || hogDelta > td){
             // gradual buildup of change -> detect fading
             tdSum += colorDelta - td;
         }else{
             tdSum = 0;
-        }
+        }*/
 
         //if(colorDelta > th || tdSum > th || hogDelta > th){
         if(hogDelta > th){
@@ -164,10 +223,12 @@ int main(int argc, char ** argv){
             //imshow(to_string(frameNumber),frame);
             cout <<  argv[3]  << ": detected shot border at frame: " << frameNumber << "\n";
             imwrite(outputPath + "@" + to_string((int)frameNumber) + ".png", frame);
+            cout << "lastedgediff: " << lastEdgeDiff << "\t currentEdgeDiff: " << currentEdgeDiff << "\nhogDelta: " << hogDelta << "\n";
 
             tdSum = 0;
         }
-        lastColorHist = currentColorHist;
+        //lastColorHist = currentColorHist;
+        lastEdgeDiff = currentEdgeDiff;
 
     }
     return 0;

@@ -7,8 +7,10 @@ find_package( OpenCV REQUIRED )
 
 add_executable(ShotDetect ShotDetect.cpp)
 add_executable(ShotDetect2 ShotDetect2.cpp)
+add_executable(ShotDetect3 ShotDetect3.cpp)
 
 include_directories(${OpenCV_INCLUDE_DIRS})
 
 target_link_libraries( ShotDetect ${OpenCV_LIBS} )
 target_link_libraries( ShotDetect2 ${OpenCV_LIBS} )
+target_link_libraries( ShotDetect3 ${OpenCV_LIBS} )
