@@ -84,7 +84,7 @@ inline float intersection(vector<float> &h1, vector<float> &h2){
 int main(int argc, char ** argv){
     if(argc < 5){
         cout << "Please specify: Th, Td, video-path and output-directory.\n";
-        cout << "./ShotDetect2 0.5 0.3 /home/theuers/exp2/35749.mp4 /home/theuers/exp2/\n";
+        cout << "./ShotDetect2 0.5 0.05 /home/theuers/exp2/35749.mp4 /home/theuers/exp2/\n";
         exit(0);
     }
 
