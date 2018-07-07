@@ -120,7 +120,7 @@ int main(int argc, char ** argv){
         if(delta > th || tdSum > th){
             frameNumber = cap.get(CV_CAP_PROP_POS_FRAMES);
             //imshow(to_string(frameNumber),frame);
-            cout <<  argv[2]  << ": detected shot border at frame: " << frameNumber << "\n";
+            cout <<  argv[3]  << ": detected shot border at frame: " << frameNumber << "\n";
             imwrite(outputPath + "@" + to_string((int)frameNumber) + ".png", frame);
 
             tdSum = 0;
