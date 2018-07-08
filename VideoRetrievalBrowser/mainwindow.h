@@ -23,6 +23,20 @@ private slots:
     void on_debugButton_clicked();
     void on_ClickableLabel_clicked();
 
+    void on_hsvToleranceSlider_valueChanged(int value);
+
+    void on_adjacentFramesButton_clicked();
+
+    void on_sendSelectedFrameButton_clicked();
+
+    void on_CNNsearchButton_clicked();
+
+    void on_colorSearchButton_clicked();
+
+    void on_edgeSearchButton_clicked();
+
+    void on_keypointSearchButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     QGridLayout *gridLayout;
@@ -32,19 +46,25 @@ private:
     int gridLayoutCounter_row;
     int gridLayoutCounter_col;
     int gridLayoutMaxCols;
+    QString shotpath;
 
     /**
      * @brief Puts an image it on the gridview to be displayed and manages gridLayout's index overflows
      * @param img
      * @todo override QWidget::resizeEvent() to get correct gridLayoutMaxCols after resize.
      */
-    void displayImage(QPixmap img);
+    void displayImage(QString img);
 
     /**
      * @brief Deletes all images that are currently displayed on the gridLayout
      * @note Does nothing if there are no images in gridLayout
      */
     void deleteDisplayedImages();
+
+    /**
+     * @brief Creates,sets up and configures color picker on its place UI window
+     */
+    void setupColorPicker();
 };
 
 #endif // MAINWINDOW_H

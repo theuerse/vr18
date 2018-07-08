@@ -5,12 +5,16 @@
 #include <QWidget>
 #include <Qt>
 
+/**
+ * @brief The ClickableLabel class (Copied verbatim from //https://wiki.qt.io/Clickable_QLabel)
+ */
 class ClickableLabel : public QLabel {
     Q_OBJECT
 
 public:
     explicit ClickableLabel(QWidget* parent = Q_NULLPTR, Qt::WindowFlags f = Qt::WindowFlags());
-    ~ClickableLabel();
+    ~ClickableLabel();   
+    QString filename;
 
 signals:
     void clicked();
