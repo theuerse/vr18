@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>623</width>
-    <height>486</height>
+    <height>505</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -150,13 +150,13 @@
        <item>
         <widget class="QToolBox" name="toolBox">
          <property name="currentIndex">
-          <number>3</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="page_1">
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>0</y>
+            <y>-43</y>
             <width>230</width>
             <height>111</height>
            </rect>
@@ -166,10 +166,41 @@
           </attribute>
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
-            <widget class="QLineEdit" name="lineEdit"/>
+            <widget class="QFrame" name="frame_7">
+             <property name="frameShape">
+              <enum>QFrame::NoFrame</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <layout class="QHBoxLayout" name="horizontalLayout_8">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QLineEdit" name="synSetFilterlineEdit"/>
+              </item>
+              <item>
+               <widget class="QPushButton" name="synSetFilterButton">
+                <property name="text">
+                 <string>Filter SynSet</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
            </item>
            <item>
-            <widget class="QComboBox" name="comboBox"/>
+            <widget class="QComboBox" name="synSetFilterComboBox"/>
            </item>
            <item>
             <widget class="QFrame" name="frame">
@@ -240,7 +271,7 @@
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>-48</y>
+            <y>0</y>
             <width>230</width>
             <height>97</height>
            </rect>
@@ -384,7 +415,7 @@
             <x>0</x>
             <y>0</y>
             <width>244</width>
-            <height>49</height>
+            <height>68</height>
            </rect>
           </property>
           <attribute name="label">
@@ -459,7 +490,7 @@
             <x>0</x>
             <y>0</y>
             <width>244</width>
-            <height>49</height>
+            <height>68</height>
            </rect>
           </property>
           <attribute name="label">
@@ -581,7 +612,7 @@
             <x>0</x>
             <y>0</y>
             <width>333</width>
-            <height>405</height>
+            <height>424</height>
            </rect>
           </property>
          </widget>
@@ -623,11 +654,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>256</x>
-     <y>202</y>
+     <y>233</y>
     </hint>
     <hint type="destinationlabel">
-     <x>138</x>
-     <y>191</y>
+     <x>157</x>
+     <y>234</y>
     </hint>
    </hints>
   </connection>
@@ -638,12 +669,12 @@
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>126</x>
-     <y>312</y>
+     <x>115</x>
+     <y>290</y>
     </hint>
     <hint type="destinationlabel">
-     <x>239</x>
-     <y>317</y>
+     <x>130</x>
+     <y>291</y>
     </hint>
    </hints>
   </connection>

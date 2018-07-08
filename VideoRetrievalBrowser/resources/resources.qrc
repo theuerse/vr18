@@ -154,4 +154,7 @@
         <file>35347@2088.png</file>
         <file>35347@2119.png</file>
     </qresource>
+    <qresource prefix="/CNN">
+        <file>synset_words.txt</file>
+    </qresource>
 </RCC>

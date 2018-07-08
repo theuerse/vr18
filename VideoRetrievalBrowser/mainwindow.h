@@ -22,19 +22,13 @@ public:
 private slots:
     void on_debugButton_clicked();
     void on_ClickableLabel_clicked();
-
     void on_hsvToleranceSlider_valueChanged(int value);
-
     void on_adjacentFramesButton_clicked();
-
     void on_sendSelectedFrameButton_clicked();
-
+    void on_synSetFilterButton_clicked();
     void on_CNNsearchButton_clicked();
-
     void on_colorSearchButton_clicked();
-
     void on_edgeSearchButton_clicked();
-
     void on_keypointSearchButton_clicked();
 
 private:
@@ -47,6 +41,8 @@ private:
     int gridLayoutCounter_col;
     int gridLayoutMaxCols;
     QString shotpath;
+    QString synsetPath;
+    QStringList synset;
 
     /**
      * @brief Puts an image it on the gridview to be displayed and manages gridLayout's index overflows
@@ -65,6 +61,11 @@ private:
      * @brief Creates,sets up and configures color picker on its place UI window
      */
     void setupColorPicker();
+
+    /**
+     * @brief reads entries from synnet.txt file and save them into a data structure
+     */
+    void readSynSet();
 };
 
 #endif // MAINWINDOW_H

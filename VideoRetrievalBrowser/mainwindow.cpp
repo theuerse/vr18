@@ -7,6 +7,7 @@
 #include <QColorDialog>
 #include <QDirIterator>
 #include <QDebug>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -14,7 +15,8 @@ MainWindow::MainWindow(QWidget *parent) :
     gridLayoutCounter_row(0),
     gridLayoutCounter_col(0),
     gridLayoutMaxCols(0),
-    shotpath(":/shots/")
+    shotpath(":/shots/"),
+    synsetPath(":/CNN/synset_words.txt")
 {
     // Prepare UI
     ui->setupUi(this);
@@ -29,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
     gridLayout->setVerticalSpacing(0);
 
     setupColorPicker();
+    readSynSet();
 }
 
 MainWindow::~MainWindow()
@@ -118,6 +121,19 @@ void MainWindow::setupColorPicker()
     ui->toolsFrame->setFixedWidth(static_cast<int>(colorPicker->width()/1.77));
 }
 
+void MainWindow::readSynSet(){
+    QFile file(synsetPath);
+    if(!file.open(QIODevice::ReadOnly)) {
+        QMessageBox::information(nullptr, "error", file.errorString());
+    }
+    QTextStream in(&file);
+    while(!in.atEnd()) {
+        QString line = in.readLine();
+        synset.push_back(line);
+    }
+    file.close();
+}
+
 void MainWindow::on_adjacentFramesButton_clicked()
 {
     ui->adjacentFramesButton->setText("not implemented");
@@ -128,9 +144,36 @@ void MainWindow::on_sendSelectedFrameButton_clicked()
     ui->sendSelectedFrameButton->setText("not implemented");
 }
 
+void MainWindow::on_synSetFilterButton_clicked()
+{
+    // Clear previous entries
+    ui->synSetFilterComboBox->clear();
+
+    // Iterate through whole synset
+    for (QString line : synset)
+    {
+        QStringList words = line.split(" ");
+        QString filter = ui->synSetFilterlineEdit->text();
+        bool containsFilter = false;
+        // Search all words in a line for filter
+        for (QString word : words) {
+            if (word.startsWith(filter)) {
+                containsFilter = true;
+            }
+        }
+        // Add line if filter was in one of the words
+        if (containsFilter) {
+            ui->synSetFilterComboBox->addItem(line);
+        }
+    }
+}
+
 void MainWindow::on_CNNsearchButton_clicked()
 {
-    ui->CNNsearchButton->setText("not implemented");
+    QString line = ui->synSetFilterComboBox->currentText();
+    QStringList words = line.split(" ");
+    std::cout << line.toStdString() << "\t (" << words[0].toStdString() << ")" << std::endl;
+    on_debugButton_clicked();
 }
 
 void MainWindow::on_colorSearchButton_clicked()
@@ -193,3 +236,6 @@ void MainWindow::on_debugButton_clicked()
         displayImage(it.fileName());
     }
 }
+
+
+
