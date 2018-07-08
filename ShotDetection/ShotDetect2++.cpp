@@ -195,6 +195,7 @@ int main(int argc, char ** argv){
     Mat lastShot = frame.clone();
     lastHist == calcColorHist(frame);
     lastShotHist = lastHist;
+    double lastShotFrameNumber, shotLength = 0;
     while(cap.read(frame)){
         frameNumber = cap.get(CV_CAP_PROP_POS_FRAMES);
         currentHist = calcColorHist(frame);
@@ -209,8 +210,10 @@ int main(int argc, char ** argv){
             tdSum = 0;
         }
 
+        shotLength = frameNumber - lastShotFrameNumber;
+
         if(delta > th || tdSum > th || IframeNumbers.find(frameNumber) != IframeNumbers.end()){
-            if(getMSSIM(lastShot, frame).val[0] < 0.6 && intersection(lastShotHist, currentHist) < 0.6){
+            if(getMSSIM(lastShot, frame).val[0] < 0.6 && intersection(lastShotHist, currentHist) < 0.6 && shotLength >= 15){
                 //imshow(to_string(frameNumber),frame);
                 cout <<  argv[3]  << ": detected shot border at frame: " << frameNumber << "\n";
                 imwrite(outputPath + "@" + to_string((int)frameNumber) + ".png", frame);
@@ -218,6 +221,7 @@ int main(int argc, char ** argv){
                 tdSum = 0;
                 lastShot = frame.clone();
                 lastShotHist = currentHist;
+                lastShotFrameNumber = frameNumber;
             }
         }
         lastHist = currentHist;
