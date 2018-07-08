@@ -3,6 +3,8 @@
 #include <QLabel>
 #include <iostream>
 #include <QColorDialog>
+#include "clickablelabel.h"
+
 
 
 
@@ -76,16 +78,32 @@ void MainWindow::on_debugButton_clicked()
     }
 }
 
+void MainWindow::on_ClickableLabel_clicked(){
+    // Highlight clicked image
+    ClickableLabel *selectedImage = qobject_cast<ClickableLabel*>(sender());
+    selectedImage->setFrameShape(QFrame::Box);
+    selectedImage->setLineWidth(3);
+
+    // Unhighlight last clicked image (if any)
+    if (lastSelectedImage != nullptr) {
+        lastSelectedImage->setFrameShape(QFrame::NoFrame);
+        lastSelectedImage->setLineWidth(1);
+    }
+    lastSelectedImage = selectedImage;
+}
+
 void MainWindow::displayImage(QPixmap img)
 {
     // Generate label and set properties
-    QLabel *label = new QLabel(this);
+    ClickableLabel *label = new ClickableLabel(this);
     label->setFrameStyle(QFrame::Panel | QFrame::Sunken);
     label->setAlignment(Qt::AlignBottom | Qt::AlignRight);
     label->setPixmap(img);
     label->setFixedSize(QSize(160, 120));
     label->setScaledContents(true);
     label->setVisible(true);
+    connect(label, SIGNAL(clicked()), this, SLOT(on_ClickableLabel_clicked()));
+
 
     /*
      * Since the width of the container is not properly reset after
@@ -115,4 +133,6 @@ void MainWindow::deleteDisplayedImages()
         gridLayoutCounter_row = 0;
         gridLayoutCounter_col = 0;
     }
+    // Clear selection
+    lastSelectedImage = nullptr;
 }

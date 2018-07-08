@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QGridLayout>
 #include <QColorDialog>
+#include "clickablelabel.h"
+
 
 namespace Ui {
 class MainWindow;
@@ -19,11 +21,13 @@ public:
 
 private slots:
     void on_debugButton_clicked();
+    void on_ClickableLabel_clicked();
 
 private:
     Ui::MainWindow *ui;
     QGridLayout *gridLayout;
     QColorDialog *colorPicker;
+    ClickableLabel *lastSelectedImage = nullptr;
 
     int gridLayoutCounter_row;
     int gridLayoutCounter_col;
@@ -41,7 +45,6 @@ private:
      * @note Does nothing if there are no images in gridLayout
      */
     void deleteDisplayedImages();
-
 };
 
 #endif // MAINWINDOW_H
