@@ -100,4 +100,28 @@ std::vector<imgstruct> SqliteDb::cnnSearch(QString synsetId){
     return images;
 }
 
+std::vector<imgstruct> SqliteDb::nameSearch(QString videoId){
+    images.clear();
+
+    QSqlQuery query(m_db);
+    query.prepare("Select * from images where name LIKE '" + videoId + "@%';");
+
+    if (query.exec())
+    {
+        while (query.next())
+        {
+            imgstruct row = {
+                query.value(0).toString(),
+                query.value(1).toString(),
+                query.value(2).toDouble(),
+                query.value(3).toDouble(),
+                query.value(4).toDouble(),
+                query.value(5).toDouble()
+            };
+            images.push_back(row);
+        }
+    }
+    return images;
+}
+
 

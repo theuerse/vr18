@@ -35,6 +35,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QGridLayout *gridLayout;
+    QHBoxLayout *hBoxlayout;
     QColorDialog *colorPicker;
     ClickableLabel *lastSelectedImage = nullptr;
     SqliteDb *dataBase;
@@ -45,7 +46,8 @@ private:
     QString shotpath;
     QString synsetPath;
     QStringList synset;
-
+    int imageHeight;
+    int imageWidth;
 
 
     /**
@@ -56,10 +58,22 @@ private:
     void displayImage(imgstruct imageInfo);
 
     /**
+     * @brief Puts an image on the videobar
+     * @param imageInfo
+     */
+    void displayVideoImage(imgstruct imageInfo);
+
+    /**
      * @brief Deletes all images that are currently displayed on the gridLayout
      * @note Does nothing if there are no images in gridLayout
      */
     void deleteDisplayedImages();
+
+    /**
+     * @brief Deletes all images that are currently displayed on the hboxLayout
+     * @note Does nothing if there are no images in hboxLayout
+     */
+    void deleteDisplayedVideoImages();
 
     /**
      * @brief Creates,sets up and configures color picker on its place UI window

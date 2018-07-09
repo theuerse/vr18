@@ -16,6 +16,8 @@ MainWindow::MainWindow(QWidget *parent) :
     gridLayoutCounter_row(0),
     gridLayoutCounter_col(0),
     gridLayoutMaxCols(0),
+    imageWidth(120),
+    imageHeight(90),
     shotpath("../VideoRetrievalBrowser/resources/shots/"),
     synsetPath(":/CNN/synset_words.txt")
 {
@@ -34,6 +36,13 @@ MainWindow::MainWindow(QWidget *parent) :
     gridLayout->setHorizontalSpacing(0);
     gridLayout->setVerticalSpacing(0);
 
+    // Prepare layout for image results
+    hBoxlayout = new QHBoxLayout(ui->videoScrollAreaWidgetContents);
+    hBoxlayout->setAlignment(Qt::AlignCenter | Qt::AlignCenter);
+
+    // Setup video bar
+    ui->videoFrame->setFixedHeight(imageHeight * 1.5);
+
     setupColorPicker();
     readSynSet();
 }
@@ -51,7 +60,7 @@ void MainWindow::displayImage(imgstruct imageInfo)
     label->setAlignment(Qt::AlignBottom | Qt::AlignRight);
     label->imageInfo = imageInfo;
     label->setPixmap(QPixmap(shotpath + imageInfo.filename));
-    label->setFixedSize(QSize(120, 90));
+    label->setFixedSize(QSize(imageWidth, imageHeight));
     label->setScaledContents(true);
     label->setVisible(true);
     connect(label, SIGNAL(clicked()), this, SLOT(on_ClickableLabel_clicked()));
@@ -76,6 +85,23 @@ void MainWindow::displayImage(imgstruct imageInfo)
     gridLayout->addWidget(label, gridLayoutCounter_row, gridLayoutCounter_col++);
 }
 
+void MainWindow::displayVideoImage(imgstruct imageInfo)
+{
+    // Generate label and set properties
+    ClickableLabel *label = new ClickableLabel(this);
+    label->setFrameStyle(QFrame::Panel | QFrame::Sunken);
+    label->setAlignment(Qt::AlignBottom | Qt::AlignRight);
+    label->imageInfo = imageInfo;
+    label->setPixmap(QPixmap(shotpath + imageInfo.filename));
+    label->setFixedSize(QSize(imageWidth, imageHeight));
+    label->setScaledContents(true);
+    label->setVisible(true);
+    connect(label, SIGNAL(clicked()), this, SLOT(on_ClickableLabel_clicked()));
+
+    // Add label to layout
+    hBoxlayout->addWidget(label);
+}
+
 void MainWindow::deleteDisplayedImages()
 {
     if (ui->scrollAreaWidgetContents->children().size() >= 1) {
@@ -83,6 +109,16 @@ void MainWindow::deleteDisplayedImages()
         gridLayout = new QGridLayout(ui->scrollAreaWidgetContents);
         gridLayoutCounter_row = 0;
         gridLayoutCounter_col = 0;
+    }
+    // Clear selection
+    lastSelectedImage = nullptr;
+}
+
+void MainWindow::deleteDisplayedVideoImages()
+{
+    if (ui->videoScrollAreaWidgetContents->children().size() >= 1) {
+        qDeleteAll(ui->videoScrollAreaWidgetContents->children());
+        hBoxlayout = new QHBoxLayout(ui->videoScrollAreaWidgetContents);
     }
     // Clear selection
     lastSelectedImage = nullptr;
@@ -140,7 +176,20 @@ void MainWindow::readSynSet(){
 
 void MainWindow::on_adjacentFramesButton_clicked()
 {
-    ui->adjacentFramesButton->setText("not implemented");
+    imgstruct imageInfo = lastSelectedImage->imageInfo;
+
+    // Delete images on video bar
+    deleteDisplayedVideoImages();
+
+    // Add new images ot video bar
+    std::vector<imgstruct> result = dataBase->nameSearch(ui->videoIdLabel->text());
+    // Display images
+    int counter = 0;
+    for (imgstruct & img : result) {
+        if(counter >= ui->numberOfResultsSlider->value()) {break;}
+        displayVideoImage(img);
+        counter++;
+    }
 }
 
 void MainWindow::on_sendSelectedFrameButton_clicked()

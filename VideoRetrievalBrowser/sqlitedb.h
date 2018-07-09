@@ -26,6 +26,7 @@ public:
 
     std::vector<imgstruct> hsvSearch(QColor color, double tol);
     std::vector<imgstruct> cnnSearch(QString synsetId);
+    std::vector<imgstruct> nameSearch(QString videoId);
 
 private:
     QString path;
