@@ -8,7 +8,9 @@
 #include <QDirIterator>
 #include <QDebug>
 #include <QMessageBox>
-
+extern "C" {
+#include <curl/curl.h>
+}
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -42,6 +44,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Setup video bar
     ui->videoFrame->setFixedHeight(imageHeight * 1.5);
+
+    // Hide debug button
+    ui->debugButton->setVisible(false);
 
     setupColorPicker();
     readSynSet();
@@ -198,7 +203,26 @@ void MainWindow::on_adjacentFramesButton_clicked()
 
 void MainWindow::on_sendSelectedFrameButton_clicked()
 {
-    ui->sendSelectedFrameButton->setText("not implemented");
+    try
+    {
+        // That's all that is needed to do cleanup of used resources (RAII style).
+        curlpp::Cleanup myCleanup;
+        // Our request to be sent.
+        curlpp::Easy myRequest;
+        // Set the URL.
+        myRequest.setOpt<Url>(ui->urlLineEdit->text().toStdString());
+        // Send request and get a result.
+        // By default the result goes to standard output.
+        myRequest.perform();
+    }
+    catch(curlpp::RuntimeError & e)
+    {
+        std::cout << e.what() << std::endl;
+    }
+    catch(curlpp::LogicError & e)
+    {
+        std::cout << e.what() << std::endl;
+    }
 }
 
 void MainWindow::on_synSetFilterButton_clicked()
