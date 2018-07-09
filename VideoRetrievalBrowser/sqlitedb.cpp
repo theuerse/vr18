@@ -118,6 +118,10 @@ std::vector<imgstruct> SqliteDb::nameSearch(QString videoId){
                 query.value(4).toDouble(),
                 query.value(5).toDouble()
             };
+            QString filename = row.filename;
+            QString fileNameWithoutType = filename.split(".")[0]; // get rid of ".png"
+            QStringList filenameComponents = fileNameWithoutType.split("@");
+            row.concept_confidence = filenameComponents[1].toDouble();
             images.push_back(row);
         }
     }

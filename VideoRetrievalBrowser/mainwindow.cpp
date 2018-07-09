@@ -183,6 +183,10 @@ void MainWindow::on_adjacentFramesButton_clicked()
 
     // Add new images ot video bar
     std::vector<imgstruct> result = dataBase->nameSearch(ui->videoIdLabel->text());
+
+    // Sort result
+    std::sort(result.begin(), result.end());
+
     // Display images
     int counter = 0;
     for (imgstruct & img : result) {
