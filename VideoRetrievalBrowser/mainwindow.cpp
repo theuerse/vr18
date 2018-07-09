@@ -42,14 +42,14 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::displayImage(QString filename)
+void MainWindow::displayImage(imgstruct imageInfo)
 {
     // Generate label and set properties
     ClickableLabel *label = new ClickableLabel(this);
     label->setFrameStyle(QFrame::Panel | QFrame::Sunken);
     label->setAlignment(Qt::AlignBottom | Qt::AlignRight);
-    label->filename = filename;
-    label->setPixmap(QPixmap(shotpath + filename));
+    label->imageInfo = imageInfo;
+    label->setPixmap(QPixmap(shotpath + imageInfo.filename));
     label->setFixedSize(QSize(120, 90));
     label->setScaledContents(true);
     label->setVisible(true);
@@ -173,10 +173,23 @@ void MainWindow::on_synSetFilterButton_clicked()
 
 void MainWindow::on_CNNsearchButton_clicked()
 {
+    // Delete old images
+    deleteDisplayedImages();
+
+    // Query database
     QString line = ui->synSetFilterComboBox->currentText();
     QStringList words = line.split(" ");
     QString synsetId = words[0];
-    std::cout << line.toStdString() << "\t (" << synsetId.toStdString() << ")" << std::endl;
+    std::cout << synsetId.toStdString() << std::endl;
+    std::vector<imgstruct> result = dataBase->cnnSearch(synsetId);
+
+    // Display images
+    int counter = 0;
+    for (imgstruct & img : result) {
+        if(counter >= ui->numberOfResultsSlider->value()) {break;}
+        displayImage(img);
+        counter++;
+    }
 }
 
 void MainWindow::on_colorSearchButton_clicked()
@@ -184,14 +197,15 @@ void MainWindow::on_colorSearchButton_clicked()
     // Delete old images
     deleteDisplayedImages();
 
+    // Query database
     double tol = static_cast<double>(ui->hsvToleranceSlider->value() / 100.0);
     std::vector<imgstruct> result = dataBase->hsvSearch(colorPicker->currentColor(), tol);
 
+    // Display images
     int counter = 0;
     for (imgstruct & img : result) {
-        if(counter >= 150) {break;}
-        displayImage(img.filename);
-        std::cout << img.filename.toStdString() << std::endl;
+        if(counter >= ui->numberOfResultsSlider->value()) {break;}
+        displayImage(img);
         counter++;
     }
 }
@@ -220,11 +234,16 @@ void MainWindow::on_ClickableLabel_clicked(){
     lastSelectedImage = selectedImage;
 
     // Update Values based on selected image
-    QString filename = selectedImage->filename;
+    imgstruct imageInfo = selectedImage->imageInfo;
+    QString filename = imageInfo.filename;
     QString fileNameWithoutType = filename.split(".")[0]; // get rid of ".png"
     QStringList filenameComponents = fileNameWithoutType.split("@");
     ui->videoIdLabel->setText(filenameComponents[0]);
     ui->frameNumberLabel->setText(filenameComponents[1]);
+    ui->synsetLabel->setText(imageInfo.concept);
+    ui->hueLabel->setText(QString::number(imageInfo.h));
+    ui->satLabel->setText(QString::number(imageInfo.s / 100.0 * 255));
+    ui->valLabel->setText(QString::number(imageInfo.v / 100.0 * 255));
     QString url = "http://demo2.itec.aau.at:80/vbs/aau/submit?team=2&video="
             + filenameComponents[0] + "&frame=" + filenameComponents[1];
     ui->urlLineEdit->setText(url);
@@ -235,15 +254,6 @@ void MainWindow::on_debugButton_clicked()
     // Change button text for user feedback
     ui->debugButton->setText(QString(rand()));
 
-    // Delete old images
-    deleteDisplayedImages();
-
-    // Fill in a number of placeholder images for demonstration
-    QDirIterator it(shotpath, QDirIterator::Subdirectories);
-    while (it.hasNext()) {
-        it.next();
-        displayImage(it.fileName());
-    }
 }
 
 

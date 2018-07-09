@@ -53,7 +53,7 @@ private:
      * @param img
      * @todo override QWidget::resizeEvent() to get correct gridLayoutMaxCols after resize.
      */
-    void displayImage(QString img);
+    void displayImage(imgstruct imageInfo);
 
     /**
      * @brief Deletes all images that are currently displayed on the gridLayout

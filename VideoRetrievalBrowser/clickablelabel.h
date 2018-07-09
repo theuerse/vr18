@@ -4,6 +4,7 @@
 #include <QLabel>
 #include <QWidget>
 #include <Qt>
+#include "sqlitedb.h"
 
 /**
  * @brief The ClickableLabel class (Copied verbatim from //https://wiki.qt.io/Clickable_QLabel)
@@ -13,8 +14,8 @@ class ClickableLabel : public QLabel {
 
 public:
     explicit ClickableLabel(QWidget* parent = Q_NULLPTR, Qt::WindowFlags f = Qt::WindowFlags());
-    ~ClickableLabel();   
-    QString filename;
+    ~ClickableLabel();
+    imgstruct imageInfo;
 
 signals:
     void clicked();

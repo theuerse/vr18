@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>623</width>
-    <height>505</height>
+    <width>806</width>
+    <height>679</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -64,13 +64,69 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
+          <item row="6" column="1">
            <widget class="QLineEdit" name="urlLineEdit"/>
           </item>
-          <item row="2" column="0">
+          <item row="6" column="0">
            <widget class="QLabel" name="label_4">
             <property name="text">
              <string>URL:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_7">
+            <property name="text">
+             <string>SynsetId:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLabel" name="synsetLabel">
+            <property name="text">
+             <string>n000000</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_9">
+            <property name="text">
+             <string>Hue:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLabel" name="hueLabel">
+            <property name="text">
+             <string>0</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_11">
+            <property name="text">
+             <string>Sat:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QLabel" name="satLabel">
+            <property name="text">
+             <string>0</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="label_13">
+            <property name="text">
+             <string>Val:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QLabel" name="valLabel">
+            <property name="text">
+             <string>0</string>
             </property>
            </widget>
           </item>
@@ -148,15 +204,54 @@
         </widget>
        </item>
        <item>
+        <widget class="QFrame" name="frame_8">
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_9">
+          <item>
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string># of results</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSlider" name="numberOfResultsSlider">
+            <property name="maximum">
+             <number>1337</number>
+            </property>
+            <property name="value">
+             <number>150</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>0</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
         <widget class="QToolBox" name="toolBox">
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="page_1">
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>-43</y>
+            <y>0</y>
             <width>230</width>
             <height>111</height>
            </rect>
@@ -272,8 +367,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>230</width>
-            <height>97</height>
+            <width>244</width>
+            <height>107</height>
            </rect>
           </property>
           <attribute name="label">
@@ -415,7 +510,7 @@
             <x>0</x>
             <y>0</y>
             <width>244</width>
-            <height>68</height>
+            <height>107</height>
            </rect>
           </property>
           <attribute name="label">
@@ -490,7 +585,7 @@
             <x>0</x>
             <y>0</y>
             <width>244</width>
-            <height>68</height>
+            <height>107</height>
            </rect>
           </property>
           <attribute name="label">
@@ -611,8 +706,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>333</width>
-            <height>424</height>
+            <width>516</width>
+            <height>598</height>
            </rect>
           </property>
          </widget>
@@ -628,7 +723,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>623</width>
+     <width>806</width>
      <height>22</height>
     </rect>
    </property>
@@ -669,12 +764,28 @@
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>115</x>
-     <y>290</y>
+     <x>206</x>
+     <y>395</y>
     </hint>
     <hint type="destinationlabel">
-     <x>130</x>
-     <y>291</y>
+     <x>253</x>
+     <y>396</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>numberOfResultsSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>label_6</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>174</x>
+     <y>259</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>248</x>
+     <y>264</y>
     </hint>
    </hints>
   </connection>

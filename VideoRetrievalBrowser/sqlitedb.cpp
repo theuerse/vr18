@@ -16,7 +16,7 @@ SqliteDb::SqliteDb(QString dbPath)
 
     if (!m_db.open())
     {
-       std::cout << "Error: connection with database fail" << std::endl;
+        std::cout << "Error: connection with database fail" << std::endl;
     }
     else
     {
@@ -41,7 +41,6 @@ std::vector<imgstruct> SqliteDb::hsvSearch(QColor color, double tol){
               << "\tTol:" << tol
               << std::endl;
 
-    m_db.open();
     QSqlQuery query(m_db);
     query.prepare("SELECT * from images where "
                   "(h BETWEEN (:lower_h) AND (:upper_h)) AND"
@@ -57,26 +56,45 @@ std::vector<imgstruct> SqliteDb::hsvSearch(QColor color, double tol){
 
     if (query.exec())
     {
-       while (query.next())
-       {
-           imgstruct row = {
-               query.value(0).toString(),
-               query.value(1).toString(),
-               query.value(2).toDouble(),
-               query.value(3).toDouble(),
-               query.value(4).toDouble(),
-               query.value(5).toDouble()
-           };
-           images.push_back(row);
-       }
+        while (query.next())
+        {
+            imgstruct row = {
+                query.value(0).toString(),
+                query.value(1).toString(),
+                query.value(2).toDouble(),
+                query.value(3).toDouble(),
+                query.value(4).toDouble(),
+                query.value(5).toDouble()
+            };
+            images.push_back(row);
+        }
     }
 
-   return images;
+    return images;
 }
 
-
 std::vector<imgstruct> SqliteDb::cnnSearch(QString synsetId){
+    images.clear();
 
+    QSqlQuery query(m_db);
+    query.prepare("SELECT * FROM images WHERE concept == '" + synsetId + "';");
+
+    if (query.exec())
+    {
+        while (query.next())
+        {
+            imgstruct row = {
+                query.value(0).toString(),
+                query.value(1).toString(),
+                query.value(2).toDouble(),
+                query.value(3).toDouble(),
+                query.value(4).toDouble(),
+                query.value(5).toDouble()
+            };
+            images.push_back(row);
+        }
+    }
+    return images;
 }
 
 
