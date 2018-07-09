@@ -11,6 +11,12 @@ struct imgstruct{
     double h;
     double s;
     double v;
+    bool operator < (const imgstruct& str) const {
+        return (concept_confidence < str.concept_confidence);
+    }
+    bool operator > (const imgstruct& str) const {
+        return (concept_confidence > str.concept_confidence);
+    }
 };
 
 class SqliteDb

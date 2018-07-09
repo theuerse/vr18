@@ -24,8 +24,9 @@ MainWindow::MainWindow(QWidget *parent) :
     // Prepare UI
     ui->setupUi(this);
 
-    // Set initial value for hsv tolerance
+    // Set initial value for slider labels
     ui->hsvToleranceLabel->setText(QString::number(ui->hsvToleranceSlider->value()));
+    ui->numberOfResultsSliderValue->setText((QString::number(ui->numberOfResultsSlider->value())));
 
     // Prepare layout for image results
     gridLayout = new QGridLayout(ui->scrollAreaWidgetContents);
@@ -183,6 +184,9 @@ void MainWindow::on_CNNsearchButton_clicked()
     std::cout << synsetId.toStdString() << std::endl;
     std::vector<imgstruct> result = dataBase->cnnSearch(synsetId);
 
+    // Sort results in descending order
+    std::sort(result.rbegin(), result.rend());
+
     // Display images
     int counter = 0;
     for (imgstruct & img : result) {
@@ -200,6 +204,9 @@ void MainWindow::on_colorSearchButton_clicked()
     // Query database
     double tol = static_cast<double>(ui->hsvToleranceSlider->value() / 100.0);
     std::vector<imgstruct> result = dataBase->hsvSearch(colorPicker->currentColor(), tol);
+
+    // Sort results in ascending order
+    std::sort(result.begin(), result.end());
 
     // Display images
     int counter = 0;

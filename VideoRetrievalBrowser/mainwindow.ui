@@ -84,7 +84,7 @@
           <item row="2" column="1">
            <widget class="QLabel" name="synsetLabel">
             <property name="text">
-             <string>n000000</string>
+             <string>n00000000</string>
             </property>
            </widget>
           </item>
@@ -233,7 +233,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="label_6">
+           <widget class="QLabel" name="numberOfResultsSliderValue">
             <property name="text">
              <string>0</string>
             </property>
@@ -776,7 +776,7 @@
   <connection>
    <sender>numberOfResultsSlider</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>label_6</receiver>
+   <receiver>numberOfResultsSliderValue</receiver>
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">

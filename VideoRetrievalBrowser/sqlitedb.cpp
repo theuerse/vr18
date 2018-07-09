@@ -66,6 +66,9 @@ std::vector<imgstruct> SqliteDb::hsvSearch(QColor color, double tol){
                 query.value(4).toDouble(),
                 query.value(5).toDouble()
             };
+            double avgHue = (color.hue() + row.h) / 2;
+            double dist = std::abs(color.hue() - avgHue);
+            row.concept_confidence = dist;
             images.push_back(row);
         }
     }
