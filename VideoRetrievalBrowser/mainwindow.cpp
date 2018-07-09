@@ -9,15 +9,18 @@
 #include <QDebug>
 #include <QMessageBox>
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     gridLayoutCounter_row(0),
     gridLayoutCounter_col(0),
     gridLayoutMaxCols(0),
-    shotpath(":/shots/"),
+    shotpath("../VideoRetrievalBrowser/resources/shots/"),
     synsetPath(":/CNN/synset_words.txt")
 {
+    dataBase = new SqliteDb("../VideoRetrievalBrowser/resources/vr.db");
+
     // Prepare UI
     ui->setupUi(this);
 
@@ -172,19 +175,25 @@ void MainWindow::on_CNNsearchButton_clicked()
 {
     QString line = ui->synSetFilterComboBox->currentText();
     QStringList words = line.split(" ");
-    std::cout << line.toStdString() << "\t (" << words[0].toStdString() << ")" << std::endl;
-    on_debugButton_clicked();
+    QString synsetId = words[0];
+    std::cout << line.toStdString() << "\t (" << synsetId.toStdString() << ")" << std::endl;
 }
 
 void MainWindow::on_colorSearchButton_clicked()
 {
-    ui->colorSearchButton->setText("not implemented");
-    on_debugButton_clicked();
-    std::cout << "H:" << colorPicker->currentColor().hue()
-              << "\tS:" << colorPicker->currentColor().saturation()
-              << "\tV:" << colorPicker->currentColor().value()
-              << "\tTol:" << static_cast<double>((ui->hsvToleranceSlider->value() / 100.0))
-              << std::endl;
+    // Delete old images
+    deleteDisplayedImages();
+
+    double tol = static_cast<double>(ui->hsvToleranceSlider->value() / 100.0);
+    std::vector<imgstruct> result = dataBase->hsvSearch(colorPicker->currentColor(), tol);
+
+    int counter = 0;
+    for (imgstruct & img : result) {
+        if(counter >= 150) {break;}
+        displayImage(img.filename);
+        std::cout << img.filename.toStdString() << std::endl;
+        counter++;
+    }
 }
 
 void MainWindow::on_edgeSearchButton_clicked()

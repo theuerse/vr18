@@ -5,6 +5,7 @@
 #include <QGridLayout>
 #include <QColorDialog>
 #include "clickablelabel.h"
+#include "sqlitedb.h"
 
 
 namespace Ui {
@@ -36,6 +37,7 @@ private:
     QGridLayout *gridLayout;
     QColorDialog *colorPicker;
     ClickableLabel *lastSelectedImage = nullptr;
+    SqliteDb *dataBase;
 
     int gridLayoutCounter_row;
     int gridLayoutCounter_col;
@@ -43,6 +45,8 @@ private:
     QString shotpath;
     QString synsetPath;
     QStringList synset;
+
+
 
     /**
      * @brief Puts an image it on the gridview to be displayed and manages gridLayout's index overflows

@@ -26,14 +26,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    clickablelabel.cpp
+    clickablelabel.cpp \
+    sqlitedb.cpp
 
 HEADERS += \
         mainwindow.h \
-    clickablelabel.h
+    clickablelabel.h \
+    sqlitedb.h
 
 FORMS += \
         mainwindow.ui
+
+QT += sql
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
