@@ -6,43 +6,53 @@ import multiprocessing as mp
 from subprocess import check_output
 from dominantColorsKmeans import getDominantColors
 
+DEBUG = False
+
 # shot detection
 SHOT_DIR = os.path.abspath("shots")
-SHOT_DETECTOR = "/home/theuers/CLionProjects/OpenCV/cmake-build-debug/ShotDetect"
-THRESHOLD = 0.7
+SHOT_DETECTOR = "../../ShotDetection/ShotDetect2++"
+THRESHOLD_H = 0.5
+THRESHOLD_D = 0.05
 
 # concept identification
 CAFFE_DIR = "/home/theuers/caffe/"
 CONCEPT_DETECTOR = os.path.join(CAFFE_DIR, "./examples/cpp_classification/classification.bin")
-MODEL = "bvlc_reference_caffenet"
-DEPLOY_PROTO = os.path.join(CAFFE_DIR, "models/"+ MODEL +"/deploy.prototxt")
-CAFFE_MODEL = os.path.join(CAFFE_DIR, "models/" + MODEL + "/bvlc_reference_caffenet.caffemodel")
+MODELS = ["bvlc_reference_caffenet","bvlc_alexnet","bvlc_googlenet"]
 BINARY_PROTO = os.path.join(CAFFE_DIR, "data/ilsvrc12/imagenet_mean.binaryproto")
 SYNSET = os.path.join(CAFFE_DIR, "data/ilsvrc12/synset_words.txt")
 
 
 def detectShots(filepath):
     start_time = time.time()
-    print("SHOTDETECT: " + os.path.basename(filepath))
-    os.system(" ".join([SHOT_DETECTOR, str(THRESHOLD), filepath, SHOT_DIR]))
-    print("END OF SHOTDETECT: " + os.path.basename(filepath) + " " + str(time.time() - start_time) + " seconds")
+    if DEBUG: print("SHOTDETECT: " + os.path.basename(filepath))
+    os.system(" ".join([SHOT_DETECTOR, str(THRESHOLD_H), str(THRESHOLD_D), filepath, SHOT_DIR]))
+    if DEBUG: print("END OF SHOTDETECT: " + os.path.basename(filepath) + " " + str(time.time() - start_time) + " seconds")
 
 
 def classifyImage(filepath):
     name = os.path.basename(filepath)
     start_time = time.time()
-    print("INDEX: " + name)
+    if DEBUG: print("INDEX: " + name)
 
     # getting concept
-    output = check_output([CONCEPT_DETECTOR, DEPLOY_PROTO, CAFFE_MODEL, BINARY_PROTO, SYNSET, filepath]).decode("utf-8")
-    firstLine = output.split("\n")[1]
-    concept = firstLine.split('"')[1].split()[0]
-    concept_confidence = firstLine.split()[0]
+    results = {}
+    for model in MODELS:
+        DEPLOY_PROTO = os.path.join(CAFFE_DIR, "models/" + model + "/deploy.prototxt")
+        CAFFE_MODEL = os.path.join(CAFFE_DIR, "models/" + model + "/" + model +".caffemodel")
+
+        output = check_output([CONCEPT_DETECTOR, DEPLOY_PROTO, CAFFE_MODEL, BINARY_PROTO, SYNSET, filepath]).decode("utf-8")
+        firstLine = output.split("\n")[1]
+        concept = firstLine.split('"')[1].split()[0]
+        concept_confidence = firstLine.split()[0]
+        results[concept_confidence]=concept
+
+    concept_confidence = max(results.keys())
+    concept = results[concept_confidence]
 
     # calculating dominant color
     dominantColor = getDominantColors(3,filepath)
-    #print(name + ": " + str(dominantColor))
-    #print(name + ": " + concept_confidence)
+    #if DEBUG: print(name + ": " + str(dominantColor))
+    #if DEBUG: print(name + ": " + concept_confidence)
 
     conn = sqlite3.connect('./vr.db')
     c = conn.cursor()
@@ -50,7 +60,7 @@ def classifyImage(filepath):
     conn.commit()
     conn.close()
 
-    print("END OF INDEX: " + name + " " + str(time.time() - start_time) + " seconds")
+    if DEBUG: print("END OF INDEX: " + name + " " + str(time.time() - start_time) + " seconds")
 
 
 
@@ -72,7 +82,7 @@ for file in sorted(os.listdir(input_dir)):
     if(file.endswith(".mp4")):
         fileList.append(os.path.join(input_dir,file))
 
-pool = mp.Pool(processes=4)
+pool = mp.Pool(mp.cpu_count())
 results = pool.map(detectShots, fileList)
 
 
@@ -84,7 +94,7 @@ for file in sorted(os.listdir(SHOT_DIR)):
 results = pool.map(classifyImage, fileList)
 
 
-
+print("done!")
 
 
 
