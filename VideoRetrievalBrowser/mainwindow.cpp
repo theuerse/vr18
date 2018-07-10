@@ -50,6 +50,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->hsvToleranceLabel->setText(QString::number(ui->hsvToleranceSlider->value()));
     ui->numberOfResultsSliderValue->setText((QString::number(ui->numberOfResultsSlider->value())));
 
+    // Set initial value for URL
+    urlIp = ui->ipAddressLineEdit->text();
+
     // Prepare layout for image results
     gridLayout = new QGridLayout(ui->scrollAreaWidgetContents);
     gridLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
@@ -327,9 +330,8 @@ void MainWindow::on_ClickableLabel_clicked(){
     ui->hueLabel->setText(QString::number(imageInfo.h));
     ui->satLabel->setText(QString::number(imageInfo.s / 100.0 * 255));
     ui->valLabel->setText(QString::number(imageInfo.v / 100.0 * 255));
-    QString url = "http://demo2.itec.aau.at:80/vbs/aau/submit?team=2&video="
-            + filenameComponents[0] + "&frame=" + filenameComponents[1];
-    ui->urlLineEdit->setText(url);
+    urlParams = "?team=2&video=" + filenameComponents[0] + "&frame=" + filenameComponents[1];
+    ui->urlLineEdit->setText(urlIp + urlParams);
 }
 
 void MainWindow::on_debugButton_clicked()
@@ -341,3 +343,9 @@ void MainWindow::on_debugButton_clicked()
 
 
 
+
+void MainWindow::on_ipAddressLineEdit_textEdited(const QString &arg1)
+{
+    urlIp = ui->ipAddressLineEdit->text();
+    ui->urlLineEdit->setText(urlIp + urlParams);
+}

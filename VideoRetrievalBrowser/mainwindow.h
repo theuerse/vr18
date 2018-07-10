@@ -35,6 +35,8 @@ private slots:
     void on_edgeSearchButton_clicked();
     void on_keypointSearchButton_clicked();
 
+    void on_ipAddressLineEdit_textEdited(const QString &arg1);
+
 private:
     Ui::MainWindow *ui;
     QGridLayout *gridLayout;
@@ -44,6 +46,8 @@ private:
     SqliteDb *dataBase;
     QNetworkAccessManager *networkManager;
     QNetworkRequest networkRequest;
+    QString urlIp;
+    QString urlParams;
 
     int gridLayoutCounter_row;
     int gridLayoutCounter_col;

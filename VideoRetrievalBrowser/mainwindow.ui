@@ -162,6 +162,39 @@
         </widget>
        </item>
        <item>
+        <widget class="QFrame" name="frame_10">
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_11">
+          <item>
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>IP:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="ipAddressLineEdit">
+            <property name="text">
+             <string>http://demo2.itec.aau.at/vbs/aau/submit</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_2">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
         <widget class="QFrame" name="frame_5">
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
@@ -239,9 +272,6 @@
           </item>
           <item>
            <widget class="QSlider" name="numberOfResultsSlider">
-            <property name="minimum">
-             <number>1</number>
-            </property>
             <property name="maximum">
              <number>1337</number>
             </property>
@@ -274,7 +304,7 @@
             <x>0</x>
             <y>0</y>
             <width>257</width>
-            <height>305</height>
+            <height>254</height>
            </rect>
           </property>
           <attribute name="label">
@@ -389,7 +419,7 @@
             <x>0</x>
             <y>0</y>
             <width>257</width>
-            <height>305</height>
+            <height>254</height>
            </rect>
           </property>
           <attribute name="label">
@@ -534,7 +564,7 @@
             <x>0</x>
             <y>0</y>
             <width>257</width>
-            <height>305</height>
+            <height>254</height>
            </rect>
           </property>
           <attribute name="label">
@@ -609,7 +639,7 @@
             <x>0</x>
             <y>0</y>
             <width>257</width>
-            <height>305</height>
+            <height>254</height>
            </rect>
           </property>
           <attribute name="label">
@@ -853,11 +883,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>256</x>
-     <y>233</y>
+     <y>376</y>
     </hint>
     <hint type="destinationlabel">
-     <x>157</x>
-     <y>234</y>
+     <x>169</x>
+     <y>377</y>
     </hint>
    </hints>
   </connection>
@@ -868,12 +898,12 @@
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>206</x>
-     <y>395</y>
+     <x>251</x>
+     <y>529</y>
     </hint>
     <hint type="destinationlabel">
-     <x>253</x>
-     <y>396</y>
+     <x>266</x>
+     <y>530</y>
     </hint>
    </hints>
   </connection>
@@ -884,12 +914,28 @@
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>174</x>
-     <y>259</y>
+     <x>250</x>
+     <y>409</y>
     </hint>
     <hint type="destinationlabel">
-     <x>248</x>
-     <y>264</y>
+     <x>265</x>
+     <y>410</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_2</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>ipAddressLineEdit</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>258</x>
+     <y>326</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>202</x>
+     <y>327</y>
     </hint>
    </hints>
   </connection>
