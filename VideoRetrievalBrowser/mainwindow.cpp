@@ -69,6 +69,10 @@ MainWindow::MainWindow(QWidget *parent) :
     // Hide debug button
     ui->debugButton->setVisible(false);
 
+    //Delete unused pages from toolbox
+    delete ui->page_3;
+    delete ui->page_4;
+
     setupColorPicker();
     readSynSet();
 }
