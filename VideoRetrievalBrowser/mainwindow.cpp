@@ -23,7 +23,25 @@ MainWindow::MainWindow(QWidget *parent) :
     shotpath("../VideoRetrievalBrowser/resources/shots/"),
     synsetPath(":/CNN/synset_words.txt")
 {
+    //Prepare database
     dataBase = new SqliteDb("../VideoRetrievalBrowser/resources/vr.db");
+
+    // Prepare network manager
+    // https://stackoverflow.com/questions/46943134/qt-http-get-request
+    networkManager = new QNetworkAccessManager();
+    QObject::connect(networkManager, &QNetworkAccessManager::finished, this, [=](QNetworkReply *reply)
+    {
+        if (reply->error()) {
+            qDebug() << reply->errorString();
+            return;
+        }
+        QString answer = reply->readAll();
+        QMessageBox msgBox;
+        msgBox.setText(answer);
+        msgBox.setFixedHeight(240);
+        msgBox.setFixedWidth(600);
+        msgBox.exec();
+    });
 
     // Prepare UI
     ui->setupUi(this);
@@ -181,8 +199,6 @@ void MainWindow::readSynSet(){
 
 void MainWindow::on_adjacentFramesButton_clicked()
 {
-    imgstruct imageInfo = lastSelectedImage->imageInfo;
-
     // Delete images on video bar
     deleteDisplayedVideoImages();
 
@@ -203,26 +219,9 @@ void MainWindow::on_adjacentFramesButton_clicked()
 
 void MainWindow::on_sendSelectedFrameButton_clicked()
 {
-    try
-    {
-        // That's all that is needed to do cleanup of used resources (RAII style).
-        curlpp::Cleanup myCleanup;
-        // Our request to be sent.
-        curlpp::Easy myRequest;
-        // Set the URL.
-        myRequest.setOpt<Url>(ui->urlLineEdit->text().toStdString());
-        // Send request and get a result.
-        // By default the result goes to standard output.
-        myRequest.perform();
-    }
-    catch(curlpp::RuntimeError & e)
-    {
-        std::cout << e.what() << std::endl;
-    }
-    catch(curlpp::LogicError & e)
-    {
-        std::cout << e.what() << std::endl;
-    }
+    networkRequest.setUrl(QUrl(ui->urlLineEdit->text()));
+    networkManager->get(networkRequest);
+    ui->checkBox->setChecked(false);
 }
 
 void MainWindow::on_synSetFilterButton_clicked()

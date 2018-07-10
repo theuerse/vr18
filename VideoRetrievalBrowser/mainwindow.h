@@ -4,6 +4,9 @@
 #include <QMainWindow>
 #include <QGridLayout>
 #include <QColorDialog>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
 #include "clickablelabel.h"
 #include "sqlitedb.h"
 
@@ -39,6 +42,8 @@ private:
     QColorDialog *colorPicker;
     ClickableLabel *lastSelectedImage = nullptr;
     SqliteDb *dataBase;
+    QNetworkAccessManager *networkManager;
+    QNetworkRequest networkRequest;
 
     int gridLayoutCounter_row;
     int gridLayoutCounter_col;
